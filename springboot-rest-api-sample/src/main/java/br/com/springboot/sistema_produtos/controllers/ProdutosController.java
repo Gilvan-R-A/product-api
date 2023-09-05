@@ -52,12 +52,31 @@ public class ProdutosController {
 		return new ResponseEntity<Produto>(product, HttpStatus.OK);	
 	}
 	
+	
 	@DeleteMapping(value = "delete")
 	@ResponseBody
 	public ResponseEntity<String>delete(@RequestParam Long idProduto){
 		produtoRepository.deleteById(idProduto); 
 		return new ResponseEntity<String>("Produto deletado com sucesso!", HttpStatus.OK);
 	}
+	
+	
+	@GetMapping(value = "buscarProdutoPorId")
+	@ResponseBody
+	public ResponseEntity<Produto> buscaProdutoPorId(@RequestParam(name = "idProduto") Long idProduto){
+		Produto produto = produtoRepository.findById(idProduto).get();
+		return new ResponseEntity<Produto>(produto, HttpStatus.OK);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 
