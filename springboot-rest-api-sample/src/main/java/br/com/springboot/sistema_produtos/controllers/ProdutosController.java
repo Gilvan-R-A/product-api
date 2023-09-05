@@ -1,8 +1,11 @@
 package br.com.springboot.sistema_produtos.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,16 +33,13 @@ public class ProdutosController {
 	}
 	
 	
+	@GetMapping(value = "listatodos")
+	@ResponseBody
+	public ResponseEntity<List<Produto>>listaProduto(){
+		List<Produto> produtos = produtoRepository.findAll();
+		return new ResponseEntity<List<Produto>>(produtos, HttpStatus.OK);
+	}
 	
 	
-	
-	
-	
-	
-   
-    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public String greetingText(@PathVariable String name) {
-        return "Hello " + name + "!";
-    }
+
 }
