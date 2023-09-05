@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,12 +33,22 @@ public class ProdutosController {
 		return new ResponseEntity<Produto>(product, HttpStatus.CREATED);
 	}
 	
-	
 	@GetMapping(value = "listatodos")
 	@ResponseBody
 	public ResponseEntity<List<Produto>>listaProduto(){
 		List<Produto> produtos = produtoRepository.findAll();
 		return new ResponseEntity<List<Produto>>(produtos, HttpStatus.OK);
+	}
+	
+	@PutMapping(value = "atualizar")
+	@ResponseBody
+	public ResponseEntity<?>atualizar(@RequestBody Produto produto){
+		if(produto.getId() == null) {
+			return new ResponseEntity<String>("Id não foi informado para atualização.", HttpStatus.OK);	
+		}
+		Produto product = produtoRepository.saveAndFlush(produto);
+		return new ResponseEntity<Produto>(product, HttpStatus.OK);
+		
 	}
 	
 	
