@@ -14,10 +14,10 @@ html {
 	margin-right: 5%;
 	margin-top: 5%;
 }
+
 #valor {
 	margin-bottom: 30px;
 }
-
 </style>
 <title>Cadastro de Produtos</title>
 </head>
@@ -25,79 +25,141 @@ html {
 <body>
 
 	<main>
-	<h3>Cadastro de Produtos</h3>
+		<h3>Cadastro de Produtos</h3>
 
-	<form action="" id="formCadastroProduto">
+		<form action="" id="formCadastroProduto">
+			<div class="mb-3">
+				<label for="id" class="form-label">ID</label> <input type="text"
+					class="form-control" id="id" readonly="readonly"> <label
+					for="nomeProduto" class="form-label">Nome do Produto</label> <input
+					type="text" class="form-control" id="nomeProduto"
+					placeholder="Informe o nome"> <label for="descricao"
+					class="form-label">Descrição</label> <input type="text"
+					class="form-control" id="descricao"> <label for="valor"
+					class="form-label">Valor</label> <input type="number"
+					class="form-control" id="valor"> <select
+					class="form-select" id="disponivel">
+					<option selected>Disponível para venda?</option>
+					<option value=1>Sim</option>
+					<option value=2>Não</option>
+				</select>
+			</div>
+		</form>
 
-		<div class="mb-3">
-		
-			<label for="id" class="form-label">ID</label>
-			<input type="text" class="form-control" id="id" readonly="readonly">
-			 
-			<label for="nomeProduto" class="form-label">Nome do Produto</label>
-			<input type="text" class="form-control" id="nomeProduto" placeholder="Informe o nome">
+		<button type="button" onclick="salvarProduto()"
+			class="btn btn-primary">Salvar</button>
+		<button type="button"
+			onclick="document.getElementById('formCadastroProduto').reset()"
+			class="btn btn-secondary">Novo</button>
+		<button type="button" data-bs-toggle="modal"
+			data-bs-target="#modalPesquisaProduto" class="btn btn-danger">Pesquisar</button>
+		<div class="modal fade" id="modalPesquisaProduto" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Pesquisa de
+							Produto</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>					
+					<div class="modal-body">
+						<form>
+							<div class="mb-3">
+								<label for="nameBusca" class="col-form-label">Informe o
+									nome</label> <input type="text" class="form-control" id="nameBusca">
+							</div>
+							<button type="button" onclick="pesquisarProduto()" class="btn btn-success">Buscar</button>
+						</form>
+						<table id="tabelaresultados" class="table">
+							<thead>
+								<tr>
+									<th scope="col">ID</th>
+									<th scope="col">Nome</th>
+									<th scope="col">Editar</th>
+								</tr>
+							</thead>
+							<tbody id="tabelaResultados">
 
-			<label for="descricao" class="form-label">Descrição</label> 
-			<input type="text" class="form-control" id="descricao">
-			
-			<label for="valor" class="form-label">Valor</label>
-			<input type="number" class="form-control" id="valor">
-			
-		 	<select class="form-select" id="disponivel">
-  				<option selected>Disponível para venda?</option>
-  				<option value= 1>Sim</option>
-  				<option value= 2>Não</option>
-			</select>
-	
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">Fechar</button>
+					</div>
+				</div>
+			</div>
 		</div>
-
-	</form>
-	
-	<button type="button" onclick="salvarProduto()" class="btn btn-primary">Salvar</button>
-	<button type="button" onclick="document.getElementById('formCadastroProduto').reset()" class="btn btn-secondary">Novo</button>
-
 	</main>
-		
+
 	<script type="text/javascript">
-	
-	function salvarProduto(){	
-		var id = $("#id").val();
-		var nome = $("#nomeProduto").val();
-		var descricao = $("#descricao").val();
-		var valor = $("#valor").val();
-		var disponivel = $("#disponivel option:selected").val();
-			
-		switch(disponivel){
-		case '1':
-			disponivel = true; 
-			break;
-		case '2':
-			disponivel = false; 
-			break;
+		function salvarProduto() {
+			var id = $("#id").val();
+			var nome = $("#nomeProduto").val();
+			var descricao = $("#descricao").val();
+			var valor = $("#valor").val();
+			var disponivel = $("#disponivel option:selected").val();
+
+			switch (disponivel) {
+			case '1':
+				disponivel = true;
+				break;
+			case '2':
+				disponivel = false;
+				break;
 			default:
-			alert("Algo deu errado!");
-			break;
+				alert("Algo deu errado!");
+				break;
+			}
+
+			$.ajax({
+				method : "POST",
+				url : "salvar",
+				data : JSON.stringify({
+					id : id,
+					nome : nome,
+					descricao : descricao,
+					valor : valor,
+					disponivel : disponivel
+				}),
+				contentType : "application/json; charset=utf-8",
+				success : function(response) {
+					$("#id").val(response.id);
+					alert("Gravou com sucesso!");
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao salvar produto" + xhr.responseText);
+			});
+
+		}
+				
+		function pesquisarProduto() {
+			var nome = $('#nameBusca').val();
+
+			if (nome != null && nome.trim() != '') {
+
+				$.ajax({
+					method : "GET",
+					url : "buscarPorNome",
+					data : "name=" + nome, 
+					success : function(response) {
+						$('#tabelaresultatos > tbody > tr').remove();
+						
+						for(var i = 0; i < response.length; i++){
+							$('#tabelaresultados > tbody').append('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td></tr>')
+						}
+
+					}
+				}).fail(function(xhr, status, errorThrown) {
+					alert("Erro ao buscar produto: " + xhr.responseText);
+				});
+			}
 		}
 		
-		   $.ajax({
-			   method: "POST",
-			   url: "salvar",
-			   data: JSON.stringify({id: id, nome: nome, descricao: descricao, valor: valor, disponivel: disponivel}),
-			   contentType: "application/json; charset=utf-8",
-			   success: function(response){
-			$("#id").val(response.id);
-			alert("Gravou com sucesso!");
-			}
-			}).fail(function(xhr, status, errorThrown){
-			alert("Erro ao salvar produto" +xhr.responseText);
-			});
-			
-	}
-	
-
 	
 	</script>
-	
+
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"
 		integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 		crossorigin="anonymous"></script>
