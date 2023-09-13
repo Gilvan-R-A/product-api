@@ -101,8 +101,9 @@
                 >
                   Buscar
                 </button>
-              </form>
-              <table id="tabelaresultados" class="table">
+              </form>           
+              <div style="height:250px; overflow:scroll;">
+              	  <table id="tabelaresultados" class="table">
                 <thead>
                   <tr>
                     <th scope="col">ID</th>
@@ -112,7 +113,8 @@
                   </tr>
                 </thead>
                 <tbody></tbody>
-              </table>
+              </table>             
+              </div>            
             </div>
             <div class="modal-footer">
               <button
@@ -136,6 +138,24 @@
         var descricao = $("#descricao").val();
         var valor = $("#valor").val();
 
+        if(nome == null || nome != null && nome.trim() == ''){
+        	$("#nome").focus();
+        	alert("Informe o nome do produto");
+        	return
+        }
+        
+        if(descricao == null || descricao != null && descricao.trim() == ''){
+        	$("#descricao").focus();
+        	alert("Descreva o produto");
+        	return
+        }
+        
+        if(valor == null || valor != null && valor.trim() == ''){
+        	$("#valor").focus();
+        	alert("Informe o valor do produto");
+        	return
+        }
+        
 
         $.ajax({
           method: "POST",
@@ -185,6 +205,7 @@
           });
         }
       }
+      
 
       function colocarEmEdicao(id) {
         $.ajax({
