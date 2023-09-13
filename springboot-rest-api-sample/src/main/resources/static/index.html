@@ -42,12 +42,7 @@
           <label for="descricao" class="form-label">Descrição</label>
           <input type="text" class="form-control" id="descricao" />
           <label for="valor" class="form-label">Valor</label>
-          <input type="number" class="form-control" id="valor" />
-          <select class="form-select" id="disponivel">
-            <option selected>Disponível para venda?</option>
-            <option value="1">Sim</option>
-            <option value="2">Não</option>
-          </select>
+          <input type="number" class="form-control" id="valor"/>
         </div>
       </form>
 
@@ -136,19 +131,7 @@
         var nome = $("#nomeProduto").val();
         var descricao = $("#descricao").val();
         var valor = $("#valor").val();
-        var disponivel = $("#disponivel option:selected").val();
 
-        switch (disponivel) {
-          case "1":
-            disponivel = true;
-            break;
-          case "2":
-            disponivel = false;
-            break;
-          default:
-            alert("Algo deu errado!");
-            break;
-        }
 
         $.ajax({
           method: "POST",
@@ -157,8 +140,7 @@
             id: id,
             nome: nome,
             descricao: descricao,
-            valor: valor,
-            disponivel: disponivel,
+            valor: valor
           }),
           contentType: "application/json; charset=utf-8",
           success: function (response) {
@@ -208,7 +190,6 @@
             $("#nomeProduto").val(response.nome);
             $("#descricao").val(response.descricao);
             $("#valor").val(response.valor);
-            $("#disponivel option:selected").val(response.disponivel);
 
             $("#modalPesquisaProduto").modal("hide");
           },

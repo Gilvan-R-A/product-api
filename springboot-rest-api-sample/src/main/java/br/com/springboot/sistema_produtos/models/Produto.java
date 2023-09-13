@@ -22,7 +22,7 @@ public class Produto implements Serializable{
 	private String nome;
 	private String descricao;
 	private double valor;
-	private boolean disponivel;
+	
 	
 	
 	public Long getId() {
@@ -49,12 +49,7 @@ public class Produto implements Serializable{
 	public void setValor(double valor) {
 		this.valor = valor;
 	}
-	public boolean isDisponivel() {
-		return disponivel;
-	}
-	public void setDisponivel(boolean disponivel) {
-		this.disponivel = disponivel;
-	}
+
 	
 	
 
