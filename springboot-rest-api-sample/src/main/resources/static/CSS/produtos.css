@@ -1,0 +1,12 @@
+@charset "ISO-8859-1";
+
+ 
+html {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 5%;
+}
+
+#valor {
+  margin-bottom: 30px;
+}
