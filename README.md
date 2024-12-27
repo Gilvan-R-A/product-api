@@ -172,7 +172,7 @@ Deleta um produto pelo seu **id**.
 
 ```   
 
- ## Principais Componentes da Estrutura do Projeto   
+ ## Estrutura do Projeto   
 
  A estrutura de diretórios do projeto é organizada da seguinte forma:   
 
