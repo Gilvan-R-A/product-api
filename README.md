@@ -4,9 +4,28 @@
 
 Este é um projeto Spring Boot simples que fornece uma API RESTful para realizar operações CRUD (Criar, Ler, Atualizar, Excluir) em produtos. A aplicação utiliza o banco de dados PostgreSQL em produção, mas também possui suporte ao H2 Database para desenvolvimento local.   
 
+## Link de Produção (Render)   
+
+https://product-api-q657.onrender.com   
+
+## Link Local (H2 ou PostgreSQL)   
+
+http://localhost:8000/
+
+## Endpoints da API   
+
+**Produção (Render)**   
+
+- **POST /salvar** - Criar um novo produto   
+- **GET /listatodos** - Listar todos os produtos   
+- **PUT /atualizar** - Atualizar um produto existente   
+- **DELETE /delete?id={id}** - Deletar um produto por ID   
+- **GET /buscarProdutoPorId?id={id}** - Buscar produto por ID   
+- **GET /buscarPorNome?nome={nome}** - Buscar produto por nome   
+
 ## Requisitos   
 
-- Java 1.8 ou superior
+- Java 11 ou superior
 - Maven 3.x ou superior   
 - PostgreSQL (para produção)   
 - H2 Database (opcional para desenvolvimento)   
@@ -20,17 +39,31 @@ git clone https://github.com/Gilvan-R-A/product-api.git
 cd springboot-rest-api-sample   
 ```  
 
-### 2. Configure o banco de dados   
+### 2. Configure o banco de dados (PostgreSQL ou H2)   
 
-Para produção, configure o PostgreSQL conforme necessário no arquivo **application.properties**:  
-
+**Para PostgreSQL:** Edite o arquivo   
+**src/main/resources/application.properties** com as credenciais corretas:   
+ 
 ```bash   
 spring.datasource.url=jdbc:postgresql://localhost:5432/spring-boot-sistema-produtos
 spring.datasource.username=postgres
 spring.datasource.password=1234
 spring.jpa.hibernate.ddl-auto=update
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQL9Dialect   
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQL9Dialect      
 ```   
+
+**Para H2 (desenvolvimento):**   
+
+```bash   
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect  
+spring.jpa.hibernate.ddl-auto=update
+spring.h2.console.enable=true
+spring.h2.console.path=/h2-console    
+```  
 
 ### 3. Executando a aplicação   
 
@@ -49,7 +82,7 @@ java -jar target/springboot-rest-api-sample-1.0.0-SNAPSHOT.jar
 
 ```  
 
-A aplicação estará disponível em **http://localhost:8000/springboot-rest-api-sample**   
+A aplicação estará disponível em **http://localhost:8000/**   
 
 
 ### 4. Acesso ao H2 Console (opcional)   
@@ -57,9 +90,9 @@ A aplicação estará disponível em **http://localhost:8000/springboot-rest-api
 Se você deseja usar o banco de dados H2 para testes ou desenvolvimento, acesse o console H2 em **http://localhost:8000/h2-console**   
 
 
-## Endpoints da API   
+## Exemplos de Requisição (JSON)   
 
-### 1. Get /produtos   
+### 1. Get /listatodos   
 
 Recupera todos os produtos cadastrados.   
 
@@ -84,7 +117,7 @@ Recupera todos os produtos cadastrados.
 
 ```   
 
-### 2. GET /produtos/{id}   
+### 2. GET /buscarProdutoPorId/{id}   
 
 Recupera um produto específico pelo seu **id**   
 
@@ -101,7 +134,7 @@ Recupera um produto específico pelo seu **id**
 
 ```  
 
-### 3. POST /produtos/{id}   
+### 3. POST /salvar   
 
 Cria um novo produto.   
 
@@ -129,7 +162,7 @@ Cria um novo produto.
 
 ```  
 
-### 4. PUT /produtos/{id}   
+### 4. PUT /atualizar/{id}   
 
 Atualiza um produto existente pelo seu **id**.   
 
@@ -158,7 +191,7 @@ Atualiza um produto existente pelo seu **id**.
 
 ```   
 
-### 5. DELETE /produtos/{id}   
+### 5. DELETE /delete/{id}   
 
 Deleta um produto pelo seu **id**.   
 
