@@ -1,8 +1,6 @@
 package br.com.springboot.sistema_produtos.models;
 
 import java.io.Serializable;
-
-import javax.annotation.Generated;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,8 +20,6 @@ public class Produto implements Serializable{
 	private String nome;
 	private String descricao;
 	private double valor;
-	
-	
 	
 	public Long getId() {
 		return id;
@@ -49,8 +45,5 @@ public class Produto implements Serializable{
 	public void setValor(double valor) {
 		this.valor = valor;
 	}
-
-	
-	
 
 }
